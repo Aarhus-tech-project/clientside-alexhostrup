@@ -3,7 +3,7 @@ import { drawBackground } from './handlers/drawing';
 import { Position } from './types';
 import { initializeInput } from './utils/initializer';
 import { move } from './handlers/input';
-import { drawPlayer, playerInfo } from './utils/player';
+import { drawPlayer, initPlayer, playerInfo } from './utils/player';
 import { addToDebugInfo, drawDebugInfo } from './utils/debug';
 
 export let canvas: HTMLCanvasElement;
@@ -21,6 +21,7 @@ const init = () => {
   canvas.width = window.innerWidth / 1.33
 
   initializeInput()
+  initPlayer()
 
   window.requestAnimationFrame(update)
 }
