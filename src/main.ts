@@ -41,7 +41,9 @@ const update = (timeStamp: number) => {
 const draw = (timeStamp: number) => {
   drawBackground()
   drawPlayer(timeStamp)
-  debugInfo(timeStamp)
+  if (import.meta.env.DEV) {
+    debugInfo(timeStamp)
+  }
 }
 
 const debugInfo = (timeStamp: number) => {
