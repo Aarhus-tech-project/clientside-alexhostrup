@@ -1,8 +1,8 @@
 import { keys } from "../utils/initializer";
-import { canvas, delta, playerPos } from "../main";
+import { delta } from "../main";
 import { Direction, Position } from "../types";
 import { normalizeVector } from "../utils/math";
-import { playerInfo } from "../utils/player";
+import { updatePlayerPos } from "../utils/player";
 
 const moveSpeed = 300
 export let velocity: Position = {
@@ -48,20 +48,7 @@ export const move = () => {
 
     normalizeVector(velocity, moveSpeed * delta)
 
-    playerPos.x += velocity.x
-    playerPos.y += velocity.y
-
-    if (playerPos.x >= canvas.width - playerInfo.width) {
-        playerPos.x = canvas.width - playerInfo.width
-    } else if (playerPos.x <= 0) {
-        playerPos.x = 0
-    }
-
-    if (playerPos.y >= canvas.height - playerInfo.height) {
-        playerPos.y = canvas.height - playerInfo.height
-    } else if (playerPos.y <= 0) {
-        playerPos.y = 0
-    }
+    updatePlayerPos(velocity)
 
     velocity.x = 0
     velocity.y = 0
