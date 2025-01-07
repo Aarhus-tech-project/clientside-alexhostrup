@@ -7,7 +7,7 @@ import { initMountains } from './graphics/mountain';
 import { updateEntities } from './utils/updater';
 import { initObstacles } from './handlers/obstacleHandler';
 import { gameOver, isRunning, setIsRunning } from './handlers/gameOver';
-import { initScore } from './graphics/ui';
+import { initGameOverWrapper, initScore } from './graphics/ui';
 import { addToDebugInfo } from './utils/debug';
 
 export let canvas: HTMLCanvasElement;
@@ -17,6 +17,8 @@ export let fps: number
 let currentTimeStampStart: number | null
 let oldTimeStamp: number | null
 
+let firstRun = true
+
 export const init = () => {
   canvas = document.querySelector<HTMLCanvasElement>('#gameCanvas')!
   context = canvas.getContext('2d')!;
@@ -24,8 +26,12 @@ export const init = () => {
   canvas.height = window.innerHeight / 1.33
   canvas.width = window.innerWidth / 1.33
 
+  if (firstRun) {
+    initGameOverWrapper()
+    initializeInput()
+    firstRun = false
+  }
   initScore()
-  initializeInput()
   initPlayer()
   initMountains()
   initObstacles()
