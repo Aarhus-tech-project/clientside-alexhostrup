@@ -5,6 +5,8 @@ import { playerInfo } from "../utils/player"
 let score = 0
 const gapX = 30
 
+let gameOverDivWrapper: HTMLDivElement
+
 export const drawUI = () => {
     const textStartY = (canvas.width / 2) - 70
     const textStartX = 30
@@ -18,24 +20,30 @@ export const initScore = () => {
     score = 0
 }
 
+export const initGameOverWrapper = () => {
+    gameOverDivWrapper = document.getElementById('gameOverWrapper') as HTMLDivElement
+
+    gameOverDivWrapper.style.height = `${canvas.height}px`
+    gameOverDivWrapper.style.width = `${canvas.width}px`
+    gameOverDivWrapper.style.position = 'absolute'
+    gameOverDivWrapper.style.top = `${(window.innerHeight - canvas.height) / 2}px`
+    gameOverDivWrapper.style.display = 'flex'
+    gameOverDivWrapper.style.justifyContent = 'center'
+    gameOverDivWrapper.style.alignItems = 'center'
+}
+
 export const updateScore = (delta: number) => {
     score += delta * 10
 }
 
 export const drawGameOverScreen = () => {
-    const gameOverDivWrapper = document.getElementById('gameOverWrapper') as HTMLDivElement
     const gameOverDiv = document.createElement('div')
-    const gameOverHeight = canvas.height / 5
-    const gameOverWidth = canvas.width / 5
 
     gameOverDiv.id = 'gameOverContent'
 
     gameOverDivWrapper.appendChild(gameOverDiv)
 
     gameOverDiv.style.display = 'block'
-    gameOverDiv.style.position = 'absolute'
-    gameOverDiv.style.top = `${(window.innerHeight / 2) - (gameOverHeight / 2)}px`
-    gameOverDiv.style.left = `${(window.innerWidth / 2) - (gameOverWidth / 2)}px`
     gameOverDiv.style.height = `fit-content`
     gameOverDiv.style.width = `fit-content`
     gameOverDiv.style.backgroundColor = 'lightcoral'
