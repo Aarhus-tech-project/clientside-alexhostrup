@@ -6,6 +6,7 @@ import { initPlayer } from './utils/player';
 import { initMountains } from './graphics/mountain';
 import { updateEntities } from './utils/updater';
 import { initObstacles } from './handlers/obstacleHandler';
+import { isRunning, setIsRunning } from './handlers/gameOver';
 
 export let canvas: HTMLCanvasElement;
 export let context: CanvasRenderingContext2D;
@@ -24,11 +25,13 @@ const init = () => {
   initPlayer()
   initMountains()
   initObstacles()
+  setIsRunning(true)
 
   window.requestAnimationFrame(update)
 }
 
 const update = (timeStamp: number) => {
+  if (!isRunning) return
   delta = (timeStamp - oldTimeStamp) / 1000
   oldTimeStamp = timeStamp
 
