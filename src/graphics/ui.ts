@@ -1,15 +1,23 @@
 import { canvas, context } from "../main"
+import { playerInfo } from "../utils/player"
 
 let score = 0
+const gapX = 30
 
 export const drawUI = () => {
-    const scoreText: HTMLDivElement = document.createElement('div')
-    scoreText.innerText = score.toString()
-
+    const textStartY = (canvas.width / 2) - 70
+    const textStartX = 30
     context.fillStyle = 'red'
-    context.fillText(scoreText.innerText, (canvas.width / 2) - (scoreText.offsetWidth / 2), 0)
+    context.font = 'bold 24px Arial'
+    context.fillText(`Score: ${Math.round(score)}`, textStartY, textStartX)
+    context.fillText(`Lives left: ${playerInfo.birdsLeft}`, textStartY, textStartX + gapX)
 }
 
 export const updateScore = (delta: number) => {
-    score += Math.round(delta * 100)
+
+    score += delta * 10
+}
+
+export const drawGameOverScreen = () => {
+
 }
