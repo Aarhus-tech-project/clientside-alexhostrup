@@ -1,17 +1,17 @@
 import './style.css'
-import { drawBackground } from './handlers/drawing';
-import { Position } from './types';
+import { draw } from './handlers/drawing';
 import { initializeInput } from './utils/initializer';
 import { move } from './handlers/input';
-import { drawPlayer, initPlayer, playerInfo } from './utils/player';
-import { addToDebugInfo, drawDebugInfo } from './utils/debug';
+import { initPlayer } from './utils/player';
+import { initMountains } from './graphics/mountain';
+import { updateEntities } from './utils/updater';
+import { initObstacles } from './handlers/obstacleHandler';
 
 export let canvas: HTMLCanvasElement;
 export let context: CanvasRenderingContext2D;
-export let playerPos: Position = { x: 550, y: 150 }
 export let delta: number
+export let fps: number
 let oldTimeStamp: number
-let fps: number
 
 const init = () => {
   canvas = document.querySelector<HTMLCanvasElement>('#gameCanvas')!
@@ -22,40 +22,23 @@ const init = () => {
 
   initializeInput()
   initPlayer()
+  initMountains()
+  initObstacles()
 
   window.requestAnimationFrame(update)
 }
 
 const update = (timeStamp: number) => {
-  delta = (timeStamp - oldTimeStamp!) / 1000
+  delta = (timeStamp - oldTimeStamp) / 1000
   oldTimeStamp = timeStamp
 
   fps = Math.round(1 / delta)
 
   draw(timeStamp)
+  updateEntities(delta)
   move()
 
   window.requestAnimationFrame(update)
-}
-
-const draw = (timeStamp: number) => {
-  drawBackground()
-  drawPlayer(timeStamp)
-  if (import.meta.env.DEV) {
-    debugInfo(timeStamp)
-  }
-}
-
-const debugInfo = (timeStamp: number) => {
-  addToDebugInfo(`FPS: ${fps}`)
-  addToDebugInfo(`Timestamp: ${timeStamp}`)
-  addToDebugInfo(`Player Height ${playerInfo.height}`)
-  addToDebugInfo(`Player Width ${playerInfo.width}`)
-  addToDebugInfo(`Player X ${playerPos.x}`)
-  addToDebugInfo(`Player Y ${playerPos.y}`)
-  addToDebugInfo(`Canvas size: [height: ${canvas.height}, width: ${canvas.width}]`)
-
-  drawDebugInfo()
 }
 
 window.onload = init;
