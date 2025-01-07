@@ -1,9 +1,23 @@
+import { drawMountains } from "../graphics/mountain"
 import { context } from "../main"
 import { NullablePosition, Position, SpriteSheetOptions } from "../types"
+import { prepareDebugInfo } from "../utils/debug"
+import { drawPlayer } from "../utils/player"
+import { drawObstacles } from "./obstacleHandler"
+
+export const draw = (timeStamp: number) => {
+    drawBackground()
+    drawMountains()
+    if (import.meta.env.DEV) {
+        prepareDebugInfo(timeStamp)
+    }
+    drawObstacles()
+    drawPlayer(timeStamp)
+}
 
 export const drawBackground = () => {
     let bkgGradient = context.createLinearGradient(0, 0, 0, context.canvas.height)
-    bkgGradient.addColorStop(1, '#cbc9f0')
+    bkgGradient.addColorStop(0.4, '#cbc9f0')
     bkgGradient.addColorStop(0, '#3992e7')
 
     context.fillStyle = bkgGradient
@@ -62,4 +76,9 @@ export const drawCircle = (position: Position, size: number, color?: string) => 
     context.fillStyle = color ?? "red"
 
     context.fill()
+}
+
+export const drawRect = (position: Position, size: { w: number, h: number }, color?: string) => {
+    context.strokeStyle = color ?? 'red'
+    context.strokeRect(position.x, position.y, size.w, size.h)
 }
