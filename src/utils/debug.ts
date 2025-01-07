@@ -2,6 +2,8 @@ import { drawCircle, drawRect, drawText } from "../handlers/drawing"
 import { canvas, delta, fps } from "../main"
 import { playerInfo } from "./player"
 
+export let debugMode: boolean = false
+
 const yStart = 20
 const gap = 20
 
@@ -9,7 +11,7 @@ let debugInfo: string[] = []
 
 export const prepareDebugInfo = (timeStamp: number) => {
     addToDebugInfo(`FPS: ${fps}`)
-    addToDebugInfo(`Timestamp: ${timeStamp}`)
+    addToDebugInfo(`Timestamp (new): ${timeStamp}`)
     addToDebugInfo(`Player Height ${playerInfo.height}`)
     addToDebugInfo(`Player Width ${playerInfo.width}`)
     addToDebugInfo(`Player X ${playerInfo.position.x}`)
@@ -35,3 +37,5 @@ export const drawDebugInfo = () => {
 export const addToDebugInfo = (debugLine: string) => {
     debugInfo.push(debugLine)
 }
+
+export const setDebugMode = (state: boolean) => debugMode = state

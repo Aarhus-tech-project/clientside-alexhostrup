@@ -1,4 +1,5 @@
 import { getDirection } from "../handlers/input"
+import { debugMode, setDebugMode } from "./debug"
 
 export const keys: boolean[] = []
 
@@ -12,6 +13,9 @@ export const initializeInput = () => {
         const direction = getDirection(e)
         if (direction !== null) {
             keys[direction] = true
+        }
+        if (e.code === 'F2') {
+            setDebugMode(!debugMode)
         }
     })
 

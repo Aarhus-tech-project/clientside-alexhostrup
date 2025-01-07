@@ -2,14 +2,14 @@ import { drawMountains } from "../graphics/mountain"
 import { drawUI } from "../graphics/ui"
 import { context } from "../main"
 import { NullablePosition, Position, SpriteSheetOptions } from "../types"
-import { prepareDebugInfo } from "../utils/debug"
+import { debugMode, prepareDebugInfo } from "../utils/debug"
 import { drawPlayer } from "../utils/player"
 import { drawObstacles } from "./obstacleHandler"
 
 export const draw = (timeStamp: number) => {
     drawBackground()
     drawMountains()
-    if (import.meta.env.DEV) {
+    if (debugMode) {
         prepareDebugInfo(timeStamp)
     }
     drawObstacles()

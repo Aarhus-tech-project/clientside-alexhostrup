@@ -3,7 +3,7 @@ import { BoxInfo, Position } from "../types";
 import planeImageSource from '../assets/plane-clear-bkg.png'
 import { drawCircle, drawRect } from "../handlers/drawing";
 import { calculateHBox, detectCollision, randomIntInRange } from "../utils/math";
-import { addToDebugInfo } from "../utils/debug";
+import { addToDebugInfo, debugMode } from "../utils/debug";
 import { killBird, playerInfo } from "../utils/player";
 
 const planeImage = new Image()
@@ -18,7 +18,7 @@ let timeSinceLastPlane = 0
 export const drawPlanes = () => {
     for (const plane of planes) {
         context.drawImage(planeImage, clipPos.x, clipPos.y, clipSize.w, clipSize.h, plane.position.x, plane.position.y, plane.width, plane.height)
-        if (import.meta.env.DEV) {
+        if (debugMode) {
             drawCircle(plane.position, 5, 'yellow')
             drawRect(plane.position, { w: plane.width, h: plane.height }, 'yellow')
             drawRect(plane.hBox?.position!, { w: plane.hBox?.width!, h: plane.hBox?.height! }, 'pink')
@@ -27,6 +27,7 @@ export const drawPlanes = () => {
 }
 
 export const initPlanes = () => {
+    planes = []
     createPlane({ x: canvas.width / 2, y: canvas.height / 2 })
 }
 
@@ -38,9 +39,6 @@ export const updatePlanes = (delta: number) => {
         plane.hBox = calculateHBox(plane.position, plane.height, plane.width)
 
         if (detectCollision(plane.hBox, playerInfo.hBox!)) killBird()
-        if (import.meta.env.DEV) {
-            // addToDebugInfo(`plane speed: ${plane.speed}`)
-        }
     }
 
     addToDebugInfo(`Amount of planes: ${planes.length}`)
