@@ -10,3 +10,4 @@ export const birdSpriteSheetOptions: SpriteSheetOptions = {
     drawRow: 1,
     scale: { x: 0.25, y: 0.25 }
 }
+
