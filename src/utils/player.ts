@@ -4,8 +4,10 @@ import { BoxInfo, Position, SpriteSheetOptions } from "../types";
 import { birdSpriteSheetOptions } from "../graphics/sprites";
 import { calculateHBox } from "./math";
 import { addToDebugInfo } from "./debug";
+import { setIsRunning } from "../handlers/gameOver";
 
 export type PlayerInfo = {
+    birdsLeft: number
     position: Position
     height: number
     width: number
@@ -17,6 +19,7 @@ export type PlayerInfo = {
 const amountOfBirds = 7
 
 export const playerInfo: PlayerInfo = {
+    birdsLeft: amountOfBirds,
     position: { x: 0, y: 0 },
     height: 0,
     width: 0,
@@ -25,6 +28,7 @@ export const playerInfo: PlayerInfo = {
 }
 
 export const initPlayer = () => {
+    playerInfo.birdsLeft = 7
     playerInfo.height = ((birdSpriteSheetOptions.image.height / birdSpriteSheetOptions.rows) * birdSpriteSheetOptions.scale?.y!) * Math.min(amountOfBirds, amountOfBirds > 7 ? 4.5 : 4)
     playerInfo.width = ((birdSpriteSheetOptions.image.width / birdSpriteSheetOptions.columns) * birdSpriteSheetOptions.scale?.x!) * Math.ceil(amountOfBirds / 4)
     playerInfo.position = { x: canvas.width / 10, y: (canvas.height / 2) - (playerInfo.height / 2) }
@@ -54,15 +58,23 @@ export const drawPlayer = (timeStamp: number) => {
 
     addToDebugInfo(genDeadBirdsDebugLine())
     addToDebugInfo(`Kill countdown: ${playerInfo.killCountdown}`)
+    addToDebugInfo(`Birds left: ${playerInfo.birdsLeft}`)
 }
 
 export const updatePlayer = (delta: number) => {
     playerInfo.killCountdown = Math.max(0, playerInfo.killCountdown - delta)
+    checkForGameOver()
 }
 
 // TODO: update the player size whenever a bird is killed
 const updatePlayerSize = () => {
 
+}
+
+const checkForGameOver = () => {
+    if (playerInfo.birdsLeft <= 0) {
+        setIsRunning(false)
+    }
 }
 
 export const updatePlayerPos = (deltaPos: Position) => {
@@ -85,13 +97,14 @@ export const updatePlayerPos = (deltaPos: Position) => {
 }
 
 export const killBird = () => {
-    if (playerInfo.killCountdown > 0 || playerInfo.eliminatedBirds.length >= amountOfBirds) return
+    if (playerInfo.killCountdown > 0 || playerInfo.birdsLeft <= 0) return
     let deadBirdNumber
     do {
         deadBirdNumber = Math.floor(Math.random() * amountOfBirds)
-    } while (playerInfo.eliminatedBirds.includes(deadBirdNumber) && playerInfo.eliminatedBirds.length < amountOfBirds)
+    } while (playerInfo.eliminatedBirds.includes(deadBirdNumber) && playerInfo.birdsLeft > 0)
     playerInfo.eliminatedBirds.push(deadBirdNumber)
     playerInfo.killCountdown = 5
+    playerInfo.birdsLeft--
     updatePlayerSize()
 }
 
