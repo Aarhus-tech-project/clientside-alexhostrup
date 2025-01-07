@@ -20,7 +20,11 @@ export type SpriteSheetOptions = {
     paused?: boolean
 }
 
-
+export type BoxInfo = {
+    position: Position,
+    height: number
+    width: number
+}
 
 export enum Direction {
     Up,
