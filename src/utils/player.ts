@@ -60,6 +60,11 @@ export const updatePlayer = (delta: number) => {
     playerInfo.killCountdown = Math.max(0, playerInfo.killCountdown - delta)
 }
 
+// TODO: update the player size whenever a bird is killed
+const updatePlayerSize = () => {
+
+}
+
 export const updatePlayerPos = (deltaPos: Position) => {
     playerInfo.position.x += deltaPos.x
     playerInfo.position.y += deltaPos.y
@@ -87,6 +92,7 @@ export const killBird = () => {
     } while (playerInfo.eliminatedBirds.includes(deadBirdNumber) && playerInfo.eliminatedBirds.length < amountOfBirds)
     playerInfo.eliminatedBirds.push(deadBirdNumber)
     playerInfo.killCountdown = 5
+    updatePlayerSize()
 }
 
 const genDeadBirdsDebugLine = () => {
