@@ -12,9 +12,9 @@ export const draw = (timeStamp: number) => {
     if (import.meta.env.DEV) {
         prepareDebugInfo(timeStamp)
     }
-    drawUI()
     drawObstacles()
     drawPlayer(timeStamp)
+    drawUI()
 }
 
 export const drawBackground = () => {
