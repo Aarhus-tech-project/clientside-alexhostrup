@@ -3,6 +3,11 @@ export type Position = {
     y: number,
 }
 
+export type Size = {
+    w: number,
+    h: number,
+}
+
 export type NullablePosition = {
     x?: number,
     y?: number,
@@ -18,6 +23,7 @@ export type SpriteSheetOptions = {
     columnOffset?: number,
     scale?: NullablePosition
     paused?: boolean
+    rotating?: boolean
 }
 
 export type BoxInfo = {
