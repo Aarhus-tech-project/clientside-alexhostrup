@@ -4,6 +4,7 @@ import { context } from "../main"
 import { NullablePosition, Position, SpriteSheetOptions } from "../types"
 import { debugMode, prepareDebugInfo } from "../utils/debug"
 import { drawPlayer } from "../utils/player"
+import { calculateSizeOfCell } from "../utils/spritesheet"
 import { drawObstacles } from "./obstacleHandler"
 
 export const draw = (timeStamp: number) => {
@@ -36,8 +37,7 @@ export const drawText = (text: string, position: NullablePosition) => {
 }
 
 export const drawSpriteSheet = (options: SpriteSheetOptions, position: Position, timeStamp: number) => {
-    const frameWidth = options.image.width / options.columns
-    const frameHeight = options.image.height / options.rows
+    const frameSize = calculateSizeOfCell(options)
 
     const maxFrame = options.columns * options.rows
     const currentFrame = options.paused ? 0 : Math.floor(timeStamp / 100) % maxFrame
@@ -59,14 +59,14 @@ export const drawSpriteSheet = (options: SpriteSheetOptions, position: Position,
 
     context.drawImage(
         options.image,
-        column * frameWidth,
-        row * frameHeight,
-        frameWidth,
-        frameHeight,
+        column * frameSize.w,
+        row * frameSize.h,
+        frameSize.w,
+        frameSize.h,
         position.x,
         position.y,
-        frameWidth * scale.x,
-        frameHeight * scale.y
+        frameSize.w * scale.x,
+        frameSize.h * scale.y
     )
 }
 
